@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.tsx",
   "scripts": {
-    "lint": "eslint . --ext .ts,.tsx"
+    "lint": "pnpm eslint . --ext .ts,.tsx"
   },
   "dependencies": {
     "react": "^17.0.2",

@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "src/index.tsx",
   "scripts": {
-    "lint": "eslint . --ext .ts,.tsx",
-    "build": "tsc",
-    "dev": "ts-node-dev --respawn src/index.tsx"
+    "lint": "pnpm eslint . --ext .ts,.tsx",
+    "build": "pnpm tsc",
+    "dev": "pnpm ts-node-dev --respawn src/index.tsx"
   },
   "dependencies": {
     "react": "^17.0.2",
