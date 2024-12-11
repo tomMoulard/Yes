@@ -10,3 +10,9 @@ actix-web = "4.0.0"
 [[bin]]
 name = "bidding_app"
 path = "backend/src/main.rs"
+
+[dev-dependencies]
+rustfmt = "1.4.37"
+
+[package.metadata]
+rustfmt = { version = "1.4.37", default = true }

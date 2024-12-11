@@ -8,7 +8,7 @@ include frontend/Makefile
 MAIN_DIR := .
 
 # Targets
-.PHONY: all build dev lint test
+.PHONY: all build dev lint test rustfmt
 
 all: build
 
@@ -25,3 +25,6 @@ lint:
 
 test:
 	cargo test --all
+
+rustfmt:
+	cargo fmt --all -- --check
