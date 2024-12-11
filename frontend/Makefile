@@ -1,15 +1,15 @@
 # Makefile for building and running the frontend
 
-# Variables
-FRONTEND_DIR := .
-
 # Targets
 .PHONY: all build dev
 
 all: build
 
-build:
-	npm install && npm run build
+install:
+	pnpm install
 
-dev:
-	npm install && npm start
+build: install
+	pnpm run build
+
+dev: install
+	pnpm start

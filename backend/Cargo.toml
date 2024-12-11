@@ -1,7 +1,7 @@
 [package]
 name = "bidding_app"
 version = "0.1.0"
-authors = ["Tom Moulard <tom@example.com>"]
+authors = ["Tom Moulard <tom@moulard.org>"]
 edition = "2021" # Changed to use the stable edition
 
 [dependencies]
@@ -9,10 +9,7 @@ actix-web = "4.0.0"
 
 [[bin]]
 name = "bidding_app"
-path = "backend/src/main.rs"
-
-[dev-dependencies]
-rustfmt = "1.8.0"
+path = "src/main.rs"
 
 [package.metadata]
 rustfmt = { version = "1.8.0", default = true }

@@ -16,29 +16,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: backend
+
     steps:
     - uses: actions/checkout@v2
 
     - name: Set up Rust
-      run: rustup show
-
-    - name: Cache cargo registry
-      uses: Swatinem/rust-cache@v2
-      with:
-        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-        path: ~/.cargo/registry
-
-    - name: Cache cargo index
-      uses: Swatinem/rust-cache@v2
-      with:
-        key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
-        path: ~/.cargo/index
+      run: rustup toolchain install stable
 
     - name: Cache cargo build
       uses: Swatinem/rust-cache@v2
       with:
         key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
-        path: target
 
     - name: Build
       run: cargo build --verbose

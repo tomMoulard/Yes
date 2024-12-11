@@ -4,13 +4,10 @@
 include backend/Makefile
 include frontend/Makefile
 
-# Variables
-MAIN_DIR := .
-
 # Targets
 .PHONY: all build dev lint test rustfmt
 
-all: build
+all: test lint build
 
 build:
 	$(MAKE) -C backend build
@@ -21,10 +18,9 @@ dev:
 	$(MAKE) -C frontend dev
 
 lint:
-	cargo fmt --all
+	$(MAKE) -C backend lint
+	$(MAKE) -C frontend lint
 
 test:
-	cargo test --all
-
-rustfmt:
-	cargo fmt --all -- --check
+	$(MAKE) -C backend test
+	$(MAKE) -C frontend test

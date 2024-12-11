@@ -1,15 +1,18 @@
 # Makefile for building and running the backend
 
-# Variables
-BACKEND_DIR := .
-
 # Targets
 .PHONY: all build dev
 
-all: build
+all: test lint build
 
 build:
 	cargo build --release
 
 dev:
 	cargo run
+
+lint:
+	cargo fmt --all -- --check
+
+test:
+	cargo test --all
