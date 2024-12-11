@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "/backend"
+    schedule:
+      interval: "monthly"
+    groups:
+      - group-name: "rust-dependencies"
+        group:
+          - "actix-web"
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "monthly"
+    groups:
+      - group-name: "bun-dependencies"
+        group:
+          - "react"
+          - "react-dom"
