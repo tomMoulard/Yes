@@ -21,3 +21,29 @@ variable "stage_name" {
   type        = string
   default     = "prod"
 }
+
+variable "lambda_role_name" {
+  description = "The name of the Lambda execution role"
+  type        = string
+  default     = "lambda_exec_role"
+}
+
+variable "lambda_runtime" {
+  description = "The runtime environment for the Lambda function"
+  type        = string
+  default     = "provided.al2"
+}
+
+variable "lambda_handler" {
+  description = "The handler for the Lambda function"
+  type        = string
+  default     = "bootstrap"
+}
+
+variable "lambda_environment_variables" {
+  description = "Environment variables for the Lambda function"
+  type        = map(string)
+  default     = {
+    RUST_BACKEND = "true"
+  }
+}

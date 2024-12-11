@@ -2,7 +2,7 @@
 name = "bidding_app"
 version = "0.1.0"
 authors = ["Tom Moulard <tom@example.com>"]
-edition = "2018"
+edition = "2024"
 
 [dependencies]
 actix-web = "4.0.0"
@@ -12,7 +12,7 @@ name = "bidding_app"
 path = "backend/src/main.rs"
 
 [dev-dependencies]
-rustfmt = "1.4.37"
+rustfmt = "1.8.0"
 
 [package.metadata]
-rustfmt = { version = "1.4.37", default = true }
+rustfmt = { version = "1.8.0", default = true }
