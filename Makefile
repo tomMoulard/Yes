@@ -1,26 +1,27 @@
-# Makefile for building and running the Bidding App
+# Main Makefile
+
+# Import backend and frontend makefiles
+include backend/Makefile
+include frontend/Makefile
 
 # Variables
-FRONTEND_DIR := frontend
-BACKEND_DIR := backend
-TERRAFORM_DIR := terraform
+MAIN_DIR := .
 
 # Targets
-.PHONY: all frontend backend dev live
+.PHONY: all build dev lint test
 
-all: frontend backend
+all: build
 
-frontend:
-	cd $(FRONTEND_DIR) && $(MAKE)
-
-backend:
-	cd $(BACKEND_DIR) && $(MAKE)
+build:
+	$(MAKE) -C backend build
+	$(MAKE) -C frontend build
 
 dev:
-	cd $(FRONTEND_DIR) && $(MAKE) dev &
-	cd $(BACKEND_DIR) && $(MAKE) dev
+	$(MAKE) -C backend dev &
+	$(MAKE) -C frontend dev
 
-live:
-	cd $(FRONTEND_DIR) && $(MAKE)
-	cd $(BACKEND_DIR) && $(MAKE)
-	cd $(TERRAFORM_DIR) && terraform init && terraform apply -auto-approve
+lint:
+	cargo fmt --all
+
+test:
+	cargo test --all

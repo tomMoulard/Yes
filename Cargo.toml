@@ -1,0 +1,8 @@
+[package]
+name = "bidding_app"
+version = "0.1.0"
+authors = ["Tom Moulard <tom@example.com>"]
+edition = "2018"
+
+[dependencies]
+actix-web = "4.0.0"
