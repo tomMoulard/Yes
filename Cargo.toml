@@ -6,3 +6,7 @@ edition = "2018"
 
 [dependencies]
 actix-web = "4.0.0"
+
+[[bin]]
+name = "bidding_app"
+path = "backend/src/main.rs"
