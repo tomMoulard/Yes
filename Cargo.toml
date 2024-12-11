@@ -2,7 +2,7 @@
 name = "bidding_app"
 version = "0.1.0"
 authors = ["Tom Moulard <tom@example.com>"]
-edition = "2024"
+edition = "2021" # Changed to use the stable edition
 
 [dependencies]
 actix-web = "4.0.0"
