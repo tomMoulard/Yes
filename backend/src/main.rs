@@ -3,6 +3,7 @@ use bcrypt::{hash, verify, DEFAULT_COST};
 use jsonwebtoken::{encode, decode, Header, Validation, EncodingKey, DecodingKey};
 use serde::{Serialize, Deserialize};
 use tokio_postgres::{NoTls, Client};
+use tokio::signal;
 
 const SECRET: &[u8] = b"your_secret_key";
 
@@ -78,7 +79,7 @@ async fn main() -> std::io::Result<()> {
         }
     });
 
-    HttpServer::new(move || {
+    let server = HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(client.clone()))
             .route("/", web::get().to(index))
@@ -87,6 +88,13 @@ async fn main() -> std::io::Result<()> {
             .route("/login", web::post().to(login))
     })
     .bind("127.0.0.1:8080")?
-    .run()
-    .await
+    .run();
+
+    let graceful = server.clone();
+    tokio::spawn(async move {
+        signal::ctrl_c().await.expect("Failed to listen for ctrl_c signal");
+        graceful.stop(true).await;
+    });
+
+    server.await
 }
