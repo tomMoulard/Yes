@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "test": "make -C backend test",
+    "build": "make -C backend build",
+    "launch": "make -C backend dev"
+  }
+}

@@ -1,0 +1,16 @@
+[package]
+name = "bidding_app"
+version = "0.1.0"
+authors = ["Tom Moulard <tom@moulard.org>"]
+edition = "2021"
+
+[dependencies]
+actix-web = "4.9.0"
+actix-rt = "2.10.0"
+
+[[bin]]
+name = "bidding_app"
+path = "src/main.rs"
+
+[package.metadata]
+rustfmt = { version = "1.8.0", default = true }
