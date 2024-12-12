@@ -1,5 +1,7 @@
 use actix_web::web;
 use actix_web::{test, App};
+use crate::index;
+use crate::bid;
 
 #[actix_rt::test]
 async fn test_index() {
