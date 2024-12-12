@@ -1,10 +1,10 @@
 use actix_web::{web, App, HttpServer, Responder};
 
-async fn index() -> impl Responder {
+pub async fn index() -> impl Responder {
     "Welcome to the Bidding App!"
 }
 
-async fn bid() -> impl Responder {
+pub async fn bid() -> impl Responder {
     "Bid placed successfully!"
 }
 
