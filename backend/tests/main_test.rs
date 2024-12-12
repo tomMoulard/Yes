@@ -1,3 +1,4 @@
+use actix_web::web;
 use actix_web::{test, App};
 
 #[actix_rt::test]
