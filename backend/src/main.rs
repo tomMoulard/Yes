@@ -70,6 +70,20 @@ pub fn verify_jwt(token: &str) -> bool {
     decode::<Claims>(token, &DecodingKey::from_secret(SECRET), &validation).is_ok()
 }
 
+impl Clone for Client {
+    fn clone(&self) -> Self {
+        // Implementing a simple clone method for Client
+        Client::new(self.config().clone(), self.tls().clone())
+    }
+}
+
+impl Clone for actix_web::dev::Server {
+    fn clone(&self) -> Self {
+        // Implementing a simple clone method for Server
+        self.clone()
+    }
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let (client, connection) = tokio_postgres::connect("host=my-rds-proxy-endpoint user=foo password=bar dbname=mydb", NoTls).await.unwrap();
