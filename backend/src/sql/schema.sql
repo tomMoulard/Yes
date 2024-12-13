@@ -1,0 +1,10 @@
+DROP SCHEMA IF EXISTS biding CASCADE;
+CREATE SCHEMA biding;
+
+CREATE TABLE biding.users (
+	id  BIGSERIAL PRIMARY KEY,
+	email       VARCHAR(200) NOT NULL,
+	password    VARCHAR(200) NOT NULL,
+	username    VARCHAR(50) UNIQUE NOT NULL,
+	UNIQUE (username)
+);
