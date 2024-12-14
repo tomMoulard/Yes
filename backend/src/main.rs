@@ -5,6 +5,9 @@ use deadpool_postgres::{Client, Pool};
 use dotenvy::dotenv;
 use env_logger::Env;
 use tokio_postgres::NoTls;
+use utoipa::ToSchema;
+use utoipa::OpenApi;
+use utoipa_swagger_ui::SwaggerUi;
 
 use crate::config::ServiceConfig;
 
@@ -15,12 +18,34 @@ mod models;
 
 use self::{errors::MyError, models::User};
 
+#[derive(ToSchema)]
+pub struct User {
+    pub email: String,
+    pub username: String,
+    pub password: String,
+}
+
+#[utoipa::path(
+    get,
+    path = "/users",
+    responses(
+        (status = 200, description = "List all users", body = [User])
+    )
+)]
 pub async fn get_users(db_pool: web::Data<Pool>) -> Result<HttpResponse, Error> {
     let client: Client = db_pool.get().await.map_err(MyError::PoolError)?;
     let users = db::get_users(&client).await?;
     Ok(HttpResponse::Ok().json(users))
 }
 
+#[utoipa::path(
+    post,
+    path = "/users",
+    request_body = User,
+    responses(
+        (status = 200, description = "Add a new user", body = User)
+    )
+)]
 pub async fn add_user(
     user: web::Json<User>,
     db_pool: web::Data<Pool>,
@@ -30,6 +55,21 @@ pub async fn add_user(
     let new_user = db::add_user(&client, user_info).await?;
     Ok(HttpResponse::Ok().json(new_user))
 }
+
+#[derive(OpenApi)]
+#[openapi(
+    paths(
+        get_users,
+        add_user
+    ),
+    components(
+        schemas(User)
+    ),
+    tags(
+        (name = "user", description = "User management endpoints")
+    )
+)]
+struct ApiDoc;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -50,6 +90,7 @@ async fn main() -> std::io::Result<()> {
                     .route(web::post().to(add_user))
                     .route(web::get().to(get_users)),
             )
+            .service(SwaggerUi::new("/docs").url("/api-doc/openapi.json", ApiDoc::openapi()))
     })
     .bind(config.server_addr.clone())?
     .run();
