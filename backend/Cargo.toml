@@ -20,7 +20,7 @@ tokio-pg-mapper = "0.2.0"
 derive_more = { version = "1.0.0", features = ["display", "error", "from"] }
 tokio-pg-mapper-derive = "0.2.0"
 utoipa = "5.2.0"
-utoipa-swagger-ui = { "8.0.3", features = ["actix-web"] }
+utoipa-swagger-ui = { version = "8.0.3", features = ["actix-web"] }
 
 [[bin]]
 name = "bidding_app"
