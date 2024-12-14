@@ -36,25 +36,31 @@ pub async fn add_user(
 }
 
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> std::.io::Result<()> {
     dotenv().ok();
+    let docs_mode = std::env::var("DOCS_MODE").unwrap_or_else(|_| "false".to_string()) == "true";
     let config = ServiceConfig::builder()
         .override_with(EnvSource::new())
         .try_build()
         .unwrap();
-    let pool = config.pg.create_pool(None, NoTls).unwrap();
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
     let server = HttpServer::new(move || {
-        App::new()
-            .app_data(web::Data::new(pool.clone()))
+        let app = App::new()
             .wrap(Logger::default())
             .service(
                 web::resource("/users")
                     .route(web::post().to(add_user))
                     .route(web::get().to(get_users)),
             )
-            .service(SwaggerUi::new("/api-docs").url("/api-docs/openapi.json", ApiDoc::openapi()))
+            .service(SwaggerUi::new("/api-docs").url("/api-docs/openapi.json", ApiDoc::openapi()));
+
+        if !docs_mode {
+            let pool = config.pg.create_pool(None, NoTls).unwrap();
+            app.app_data(web::Data::new(pool.clone()))
+        } else {
+            app
+        }
     })
     .bind(config.server_addr.clone())?
     .run();
