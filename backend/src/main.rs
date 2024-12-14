@@ -54,9 +54,7 @@ async fn main() -> std::io::Result<()> {
                     .route(web::post().to(add_user))
                     .route(web::get().to(get_users)),
             )
-            .service(
-                SwaggerUi::new("/api-docs").url("/api-docs/openapi.json", ApiDoc::openapi())
-            )
+            .service(SwaggerUi::new("/api-docs").url("/api-docs/openapi.json", ApiDoc::openapi()))
     })
     .bind(config.server_addr.clone())?
     .run();
