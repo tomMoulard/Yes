@@ -77,3 +77,66 @@ resource "aws_api_gateway_deployment" "api" {
 output "api_url" {
   value = aws_api_gateway_deployment.api.invoke_url
 }
+
+resource "aws_db_instance" "default" {
+  allocated_storage    = 20
+  engine               = "postgres"
+  engine_version       = "13.3"
+  instance_class       = "db.t2.micro"
+  name                 = "mydb"
+  username             = "foo"
+  password             = "bar"
+  parameter_group_name = "default.postgres13"
+}
+
+resource "aws_security_group" "rds_sg" {
+  name        = "rds_sg"
+  description = "Allow traffic to RDS"
+  vpc_id      = "vpc-123456"
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+module "rds_proxy" {
+  source  = "terraform-aws-modules/rds-proxy/aws"
+  version = "~> 1.0"
+
+  name               = "rds_proxy"
+  engine_family      = "POSTGRESQL"
+  db_instance_identifiers = [aws_db_instance.default.id]
+  iam_auth           = true
+  role_arn           = module.lambda_role.arn
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+}
+
+resource "aws_security_group" "rds_proxy_sg" {
+  name        = "rds_proxy_sg"
+  description = "Allow traffic to RDS Proxy"
+  vpc_id      = "vpc-123456"
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
