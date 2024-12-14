@@ -36,7 +36,7 @@ pub async fn add_user(
 }
 
 #[actix_web::main]
-async fn main() -> std::.io::Result<()> {
+async fn main() -> std::io::Result<()> {
     dotenv().ok();
     let docs_mode = std::env::var("DOCS_MODE").unwrap_or_else(|_| "false".to_string()) == "true";
     let config = ServiceConfig::builder()
