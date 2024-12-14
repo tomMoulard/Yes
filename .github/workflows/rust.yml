@@ -48,3 +48,9 @@ jobs:
 
     - name: Lint with rustfmt
       run: cargo fmt -- --check
+
+    - name: Generate OpenAPI documentation
+      run: cargo run --bin bidding_app > openapi_generated.json
+
+    - name: Compare OpenAPI documentation
+      run: diff -q openapi_generated.json openapi.json || (echo "OpenAPI documentation is not up to date" && exit 1)

@@ -5,13 +5,17 @@ use deadpool_postgres::{Client, Pool};
 use dotenvy::dotenv;
 use env_logger::Env;
 use tokio_postgres::NoTls;
+use utoipa::OpenApi;
+use utoipa_swagger_ui::SwaggerUi;
 
 use crate::config::ServiceConfig;
+use crate::openapi::ApiDoc;
 
 mod config;
 mod db;
 mod errors;
 mod models;
+mod openapi;
 
 use self::{errors::MyError, models::User};
 
@@ -49,6 +53,9 @@ async fn main() -> std::io::Result<()> {
                 web::resource("/users")
                     .route(web::post().to(add_user))
                     .route(web::get().to(get_users)),
+            )
+            .service(
+                SwaggerUi::new("/api-docs").url("/api-docs/openapi.json", ApiDoc::openapi())
             )
     })
     .bind(config.server_addr.clone())?

@@ -24,3 +24,6 @@ test:
 update-deps:
 	cargo upgrade -i allow && cargo update
 
+# Generate OpenAPI documentation
+generate-openapi:
+	cargo run --bin bidding_app > openapi_generated.json
