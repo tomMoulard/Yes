@@ -5,7 +5,6 @@ use deadpool_postgres::{Client, Pool};
 use dotenvy::dotenv;
 use env_logger::Env;
 use tokio_postgres::NoTls;
-use utoipa::ToSchema;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
@@ -17,13 +16,6 @@ mod errors;
 mod models;
 
 use self::{errors::MyError, models::User};
-
-#[derive(ToSchema)]
-pub struct User {
-    pub email: String,
-    pub username: String,
-    pub password: String,
-}
 
 #[utoipa::path(
     get,
