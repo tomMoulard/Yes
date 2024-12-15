@@ -29,7 +29,7 @@ openapi:
 	cargo run --bin bidding_app -- generate-openapi > openapi.json
 
 start-db:
-	docker-compose -f .devcontainers/docker-compose.yml up -d
+	-docker-compose -f ../.devcontainers/docker-compose.yml up -d
 
 stop-db:
-	docker-compose -f .devcontainers/docker-compose.yml down
+	-docker-compose -f ../.devcontainers/docker-compose.yml down

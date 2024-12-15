@@ -1,8 +1,5 @@
 # Main Makefile
 
-# Import backend and frontend makefiles
-include backend/Makefile
-
 # Targets
 .PHONY: all build dev lint test rustfmt generate
 

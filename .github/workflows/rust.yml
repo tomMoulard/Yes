@@ -27,6 +27,9 @@ jobs:
     - name: Install rustfmt
       run: rustup component add rustfmt
 
+    - name: openapi
+      run: make openapi
+
     - name: Build
       run: cargo build --verbose
 
