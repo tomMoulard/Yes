@@ -25,6 +25,10 @@ tokio-postgres = "0.7.12"
 utoipa = "5.2.0"
 utoipa-actix-web = "0.1.2"
 utoipa-swagger-ui = { version = "8.0.3", features = ["actix-web"] }
+opentelemetry = "0.16.0"
+opentelemetry-aws = "0.16.0"
+tracing = "0.1.26"
+tracing-subscriber = "0.2.25"
 
 [[bin]]
 name = "bidding_app"

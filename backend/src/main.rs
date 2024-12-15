@@ -16,14 +16,17 @@ mod config;
 mod db;
 mod errors;
 mod models;
+mod tracing;
 
 use self::{errors::MyError, models::User};
+use tracing::{instrument, Instrument};
 
 #[utoipa::path(
     get,
     path = "/users/v1",
     responses((status = 200, description = "List all users", body = [User]))
 )]
+#[instrument]
 pub async fn get_users(db_pool: web::Data<Pool>) -> Result<HttpResponse, Error> {
     let client: Client = db_pool.get().await.map_err(MyError::PoolError)?;
     let users = db::get_users(&client).await?;
@@ -36,6 +39,7 @@ pub async fn get_users(db_pool: web::Data<Pool>) -> Result<HttpResponse, Error> 
     request_body = User,
     responses((status = 200, description = "Add a new user", body = User))
 )]
+#[instrument]
 pub async fn add_user(
     user: web::Json<User>,
     db_pool: web::Data<Pool>,
@@ -69,6 +73,8 @@ async fn main() -> std::io::Result<()> {
         .unwrap();
     let pool = config.pg.create_pool(None, NoTls).unwrap();
     env_logger::init_from_env(Env::default().default_filter_or("info"));
+
+    tracing::init_tracer();
 
     let server = HttpServer::new(move || {
         App::new()

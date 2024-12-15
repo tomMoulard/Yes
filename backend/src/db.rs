@@ -1,8 +1,10 @@
 use deadpool_postgres::Client;
 use tokio_pg_mapper::FromTokioPostgresRow;
+use tracing::instrument;
 
 use crate::{errors::MyError, models::User};
 
+#[instrument]
 pub async fn get_users(client: &Client) -> Result<Vec<User>, MyError> {
     let stmt = include_str!("sql/get_users.sql");
     let stmt = stmt.replace("$table_fields", &User::sql_table_fields());
@@ -18,6 +20,7 @@ pub async fn get_users(client: &Client) -> Result<Vec<User>, MyError> {
     Ok(results)
 }
 
+#[instrument]
 pub async fn add_user(client: &Client, user_info: User) -> Result<User, MyError> {
     let _stmt = include_str!("sql/add_user.sql");
     let _stmt = _stmt.replace("$table_fields", &User::sql_table_fields());
