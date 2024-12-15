@@ -80,6 +80,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .wrap(Logger::default())
+            .wrap(tracing_actix_web::TracingLogger::default())
             .service(
                 web::resource("/users/v1")
                     .route(web::post().to(add_user))
