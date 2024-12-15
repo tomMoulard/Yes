@@ -1,10 +1,7 @@
 # Main Makefile
 
-# Import backend and frontend makefiles
-include backend/Makefile
-
 # Targets
-.PHONY: all build dev lint test rustfmt
+.PHONY: all build dev lint test rustfmt generate
 
 all: test lint build
 
@@ -19,3 +16,6 @@ lint:
 
 test:
 	$(MAKE) -C backend test
+
+generate:
+	$(MAKE) -C backend openapi

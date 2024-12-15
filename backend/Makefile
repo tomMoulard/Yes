@@ -8,7 +8,7 @@ all: test lint build
 build:
 	cargo build --release
 
-dev:
+dev: start-db
 	cargo run
 
 lint:
@@ -24,3 +24,12 @@ test:
 update-deps:
 	cargo upgrade -i allow && cargo update
 
+# Generate OpenAPI documentation
+openapi:
+	cargo run --bin bidding_app -- generate-openapi > openapi.json
+
+start-db:
+	-docker-compose -f ../.devcontainers/docker-compose.yml up -d
+
+stop-db:
+	-docker-compose -f ../.devcontainers/docker-compose.yml down

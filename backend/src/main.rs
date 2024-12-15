@@ -1,3 +1,5 @@
+use std::env;
+
 use actix_web::middleware::Logger;
 use actix_web::{web, App, Error, HttpResponse, HttpServer};
 use confik::{Configuration as _, EnvSource};
@@ -5,6 +7,8 @@ use deadpool_postgres::{Client, Pool};
 use dotenvy::dotenv;
 use env_logger::Env;
 use tokio_postgres::NoTls;
+use utoipa::OpenApi;
+use utoipa_swagger_ui::SwaggerUi;
 
 use crate::config::ServiceConfig;
 
@@ -15,12 +19,23 @@ mod models;
 
 use self::{errors::MyError, models::User};
 
+#[utoipa::path(
+    get,
+    path = "/users/v1",
+    responses((status = 200, description = "List all users", body = [User]))
+)]
 pub async fn get_users(db_pool: web::Data<Pool>) -> Result<HttpResponse, Error> {
     let client: Client = db_pool.get().await.map_err(MyError::PoolError)?;
     let users = db::get_users(&client).await?;
     Ok(HttpResponse::Ok().json(users))
 }
 
+#[utoipa::path(
+    post,
+    path = "/users/v1",
+    request_body = User,
+    responses((status = 200, description = "Add a new user", body = User))
+)]
 pub async fn add_user(
     user: web::Json<User>,
     db_pool: web::Data<Pool>,
@@ -31,8 +46,22 @@ pub async fn add_user(
     Ok(HttpResponse::Ok().json(new_user))
 }
 
+#[derive(OpenApi)]
+#[openapi(
+    paths(get_users, add_user),
+    components(schemas(User)),
+    tags((name = "user", description = "User management endpoints"))
+)]
+struct ApiDoc;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    let args: Vec<String> = env::args().collect();
+    if args.len() > 1 && args[1] == "generate-openapi" {
+        println!("{}", ApiDoc::openapi().to_pretty_json().unwrap());
+        return Ok(());
+    }
+
     dotenv().ok();
     let config = ServiceConfig::builder()
         .override_with(EnvSource::new())
@@ -46,10 +75,11 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .wrap(Logger::default())
             .service(
-                web::resource("/users")
+                web::resource("/users/v1")
                     .route(web::post().to(add_user))
                     .route(web::get().to(get_users)),
             )
+            .service(SwaggerUi::new("/docs/{_:.*}").url("/docs/openapi.json", ApiDoc::openapi()))
     })
     .bind(config.server_addr.clone())?
     .run();
@@ -62,3 +92,4 @@ async fn main() -> std::io::Result<()> {
 // - JWT
 // - salt passwords in DB
 // - login/register
+// - OpenAPI

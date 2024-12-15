@@ -2,13 +2,6 @@ name: Rust
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'backend/**'
-  pull_request:
-    branches:
-      - main
     paths:
       - 'backend/**'
 
@@ -31,6 +24,12 @@ jobs:
       with:
         workspaces: backend
 
+    - name: Install rustfmt
+      run: rustup component add rustfmt
+
+    - name: openapi
+      run: make openapi
+
     - name: Build
       run: cargo build --verbose
 
@@ -41,10 +40,4 @@ jobs:
       run: cargo clippy -- -D warnings
 
     - name: Format
-      run: cargo fmt -- --check
-
-    - name: Install rustfmt
-      run: rustup component add rustfmt
-
-    - name: Lint with rustfmt
       run: cargo fmt -- --check
