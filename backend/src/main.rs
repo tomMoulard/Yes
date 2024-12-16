@@ -16,39 +16,58 @@ mod config;
 mod db;
 mod errors;
 mod models;
+mod auth;
 
 use self::{errors::MyError, models::User};
 
 #[utoipa::path(
-    get,
-    path = "/users/v1",
-    responses((status = 200, description = "List all users", body = [User]))
-)]
-pub async fn get_users(db_pool: web::Data<Pool>) -> Result<HttpResponse, Error> {
-    let client: Client = db_pool.get().await.map_err(MyError::PoolError)?;
-    let users = db::get_users(&client).await?;
-    Ok(HttpResponse::Ok().json(users))
-}
-
-#[utoipa::path(
     post,
-    path = "/users/v1",
+    path = "/register",
     request_body = User,
-    responses((status = 200, description = "Add a new user", body = User))
+    responses((status = 200, description = "Register a new user", body = String))
 )]
-pub async fn add_user(
+pub async fn register_user(
     user: web::Json<User>,
     db_pool: web::Data<Pool>,
 ) -> Result<HttpResponse, Error> {
     let user_info: User = user.into_inner();
     let client: Client = db_pool.get().await.map_err(MyError::PoolError)?;
-    let new_user = db::add_user(&client, user_info).await?;
-    Ok(HttpResponse::Ok().json(new_user))
+    let token = db::register_user(&client, user_info).await?;
+    Ok(HttpResponse::Ok().json(token))
+}
+
+#[utoipa::path(
+    post,
+    path = "/login",
+    request_body = User,
+    responses((status = 200, description = "Login a user", body = String))
+)]
+pub async fn login_user(
+    user: web::Json<User>,
+    db_pool: web::Data<Pool>,
+) -> Result<HttpResponse, Error> {
+    let user_info: User = user.into_inner();
+    let client: Client = db_pool.get().await.map_err(MyError::PoolError)?;
+    let token = db::login_user(&client, &user_info.email, &user_info.password).await?;
+    Ok(HttpResponse::Ok().json(token))
+}
+
+#[utoipa::path(
+    post,
+    path = "/refresh",
+    request_body = String,
+    responses((status = 200, description = "Refresh JWT token", body = String))
+)]
+pub async fn refresh_token(
+    token: web::Json<String>,
+) -> Result<HttpResponse, Error> {
+    let new_token = auth::refresh_jwt(&token).ok_or(MyError::NotFound)?;
+    Ok(HttpResponse::Ok().json(new_token))
 }
 
 #[derive(OpenApi)]
 #[openapi(
-    paths(get_users, add_user),
+    paths(register_user, login_user, refresh_token),
     components(schemas(User)),
     tags((name = "user", description = "User management endpoints"))
 )]
@@ -75,9 +94,16 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .wrap(Logger::default())
             .service(
-                web::resource("/users/v1")
-                    .route(web::post().to(add_user))
-                    .route(web::get().to(get_users)),
+                web::resource("/register")
+                    .route(web::post().to(register_user)),
+            )
+            .service(
+                web::resource("/login")
+                    .route(web::post().to(login_user)),
+            )
+            .service(
+                web::resource("/refresh")
+                    .route(web::post().to(refresh_token)),
             )
             .service(SwaggerUi::new("/docs/{_:.*}").url("/docs/openapi.json", ApiDoc::openapi()))
     })
@@ -87,9 +113,3 @@ async fn main() -> std::io::Result<()> {
 
     server.await
 }
-
-// TODO:
-// - JWT
-// - salt passwords in DB
-// - login/register
-// - OpenAPI

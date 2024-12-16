@@ -3,7 +3,7 @@ CREATE SCHEMA biding;
 
 CREATE TABLE biding.users (
 	id  BIGSERIAL PRIMARY KEY,
-	email       VARCHAR(200) NOT NULL,
+	email       VARCHAR(200) NOT NULL UNIQUE,
 	password    VARCHAR(200) NOT NULL,
 	username    VARCHAR(50) UNIQUE NOT NULL,
 	UNIQUE (username)
