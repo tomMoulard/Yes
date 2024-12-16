@@ -13,34 +13,6 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/register": {
-      "post": {
-        "tags": [],
-        "operationId": "register_user",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Register a new user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/login": {
       "post": {
         "tags": [],
@@ -59,7 +31,7 @@
           "200": {
             "description": "Login a user",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }
@@ -75,7 +47,7 @@
         "operationId": "refresh_token",
         "requestBody": {
           "content": {
-            "application/json": {
+            "text/plain": {
               "schema": {
                 "type": "string"
               }
@@ -87,7 +59,35 @@
           "200": {
             "description": "Refresh JWT token",
             "content": {
-              "application/json": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [],
+        "operationId": "register_user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Register a new user",
+            "content": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }
