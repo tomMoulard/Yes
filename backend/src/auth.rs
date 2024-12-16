@@ -34,21 +34,22 @@ pub fn validate_jwt(token: &str) -> bool {
 }
 
 pub fn refresh_jwt(token: &str) -> Option<String> {
-    if let Ok(token_data) = decode::<Claims>(token, &DecodingKey::from_secret(SECRET), &Validation::default()) {
-        let new_expiration = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_secs() + 3600; // 1 hour expiration
+    if validate_jwt(token) {
+        if let Ok(token_data) = decode::<Claims>(token, &DecodingKey::from_secret(SECRET), &Validation::default()) {
+            let new_expiration = SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap()
+                .as_secs() + 3600; // 1 hour expiration
 
-        let new_claims = Claims {
-            sub: token_data.claims.sub,
-            exp: new_expiration as usize,
-            email: token_data.claims.email,
-            username: token_data.claims.username,
-        };
+            let new_claims = Claims {
+                sub: token_data.claims.sub,
+                exp: new_expiration as usize,
+                email: token_data.claims.email,
+                username: token_data.claims.username,
+            };
 
-        Some(encode(&Header::default(), &new_claims, &EncodingKey::from_secret(SECRET)).unwrap())
-    } else {
-        None
+            return Some(encode(&Header::default(), &new_claims, &EncodingKey::from_secret(SECRET)).unwrap());
+        }
     }
+    None
 }
