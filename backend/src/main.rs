@@ -12,11 +12,11 @@ use utoipa_swagger_ui::SwaggerUi;
 
 use crate::config::ServiceConfig;
 
+mod auth;
 mod config;
 mod db;
 mod errors;
 mod models;
-mod auth;
 
 use self::{errors::MyError, models::User};
 
@@ -58,9 +58,7 @@ pub async fn login_user(
     request_body = String,
     responses((status = 200, description = "Refresh JWT token", body = String))
 )]
-pub async fn refresh_token(
-    token: web::Json<String>,
-) -> Result<HttpResponse, Error> {
+pub async fn refresh_token(token: web::Json<String>) -> Result<HttpResponse, Error> {
     let new_token = auth::refresh_jwt(&token).ok_or(MyError::NotFound)?;
     Ok(HttpResponse::Ok().json(new_token))
 }
@@ -93,18 +91,9 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .wrap(Logger::default())
-            .service(
-                web::resource("/register")
-                    .route(web::post().to(register_user)),
-            )
-            .service(
-                web::resource("/login")
-                    .route(web::post().to(login_user)),
-            )
-            .service(
-                web::resource("/refresh")
-                    .route(web::post().to(refresh_token)),
-            )
+            .service(web::resource("/register").route(web::post().to(register_user)))
+            .service(web::resource("/login").route(web::post().to(login_user)))
+            .service(web::resource("/refresh").route(web::post().to(refresh_token)))
             .service(SwaggerUi::new("/docs/{_:.*}").url("/docs/openapi.json", ApiDoc::openapi()))
     })
     .bind(config.server_addr.clone())?

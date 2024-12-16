@@ -1,8 +1,8 @@
+use bcrypt::{hash, verify, DEFAULT_COST};
 use deadpool_postgres::Client;
 use tokio_pg_mapper::FromTokioPostgresRow;
-use bcrypt::{hash, verify, DEFAULT_COST};
 
-use crate::{errors::MyError, models::User, auth::generate_jwt};
+use crate::{auth::generate_jwt, errors::MyError, models::User};
 
 pub async fn register_user(client: &Client, user_info: User) -> Result<String, MyError> {
     let _stmt = include_str!("sql/add_user.sql");
@@ -12,7 +12,10 @@ pub async fn register_user(client: &Client, user_info: User) -> Result<String, M
     let hashed_password = hash(&user_info.password, DEFAULT_COST).unwrap();
 
     client
-        .query(&stmt, &[&user_info.email, &hashed_password, &user_info.username])
+        .query(
+            &stmt,
+            &[&user_info.email, &hashed_password, &user_info.username],
+        )
         .await?
         .iter()
         .map(|row| User::from_row_ref(row).unwrap())
