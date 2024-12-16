@@ -39,7 +39,7 @@ pub async fn login_user(client: &Client, email: &str, password: &str) -> Result<
         .ok_or(MyError::NotFound)?;
 
     if verify(password, &result.password).unwrap() {
-        let token = generate_jwt(&result.email);
+        let token = generate_jwt(&result);
         Ok(token)
     } else {
         Err(MyError::NotFound)

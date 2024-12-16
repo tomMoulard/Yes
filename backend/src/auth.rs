@@ -1,6 +1,6 @@
 use jsonwebtoken::{encode, decode, Header, Validation, EncodingKey, DecodingKey};
 use serde::{Serialize, Deserialize};
-use std::time::{SystemTime, UNIX_EPOCH, Duration};
+use std::time::{SystemTime, UNIX_EPOCH};
 use crate::models::User;
 
 #[derive(Debug, Serialize, Deserialize)]
