@@ -1,5 +1,7 @@
 # Makefile for building and running the backend
 
+
+
 # Targets
 .PHONY: all build dev
 
@@ -33,3 +35,7 @@ start-db:
 
 stop-db:
 	-docker-compose -f ../.devcontainers/docker-compose.yml down
+
+install-cargo:
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+	source ${HOME}/.cargo/env

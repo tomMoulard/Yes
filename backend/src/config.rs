@@ -7,6 +7,8 @@ pub struct ServiceConfig {
     pub server_addr: String,
     #[confik(from = DbConfig)]
     pub pg: deadpool_postgres::Config,
+    #[confik(default = "http://localhost:4317")]
+    pub otel_collector_endpoint: String,
 }
 
 #[derive(Debug, Deserialize)]

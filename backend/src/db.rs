@@ -1,9 +1,11 @@
 use bcrypt::{hash, verify, DEFAULT_COST};
 use deadpool_postgres::Client;
 use tokio_pg_mapper::FromTokioPostgresRow;
+use tracing::{instrument, info, error};
 
 use crate::{auth::generate_jwt, errors::MyError, models::User};
 
+#[instrument(skip(client))]
 pub async fn register_user(client: &Client, user_info: User) -> Result<String, MyError> {
     let _stmt = include_str!("sql/add_user.sql");
     let _stmt = _stmt.replace("$table_fields", &User::sql_table_fields());
@@ -24,9 +26,11 @@ pub async fn register_user(client: &Client, user_info: User) -> Result<String, M
         .ok_or(MyError::NotFound)?;
 
     let token = generate_jwt(&user_info);
+    info!("User registered: {}", user_info.email);
     Ok(token)
 }
 
+#[instrument(skip(client))]
 pub async fn login_user(client: &Client, email: &str, password: &str) -> Result<String, MyError> {
     let stmt = include_str!("sql/get_user_by_email.sql");
     let stmt = stmt.replace("$table_fields", &User::sql_table_fields());
@@ -43,8 +47,10 @@ pub async fn login_user(client: &Client, email: &str, password: &str) -> Result<
 
     if verify(password, &result.password).unwrap() {
         let token = generate_jwt(&result);
+        info!("User logged in: {}", email);
         Ok(token)
     } else {
+        error!("Failed login attempt for user: {}", email);
         Err(MyError::NotFound)
     }
 }

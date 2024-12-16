@@ -17,8 +17,11 @@ mod config;
 mod db;
 mod errors;
 mod models;
+mod tracing;
 
 use self::{errors::MyError, models::User};
+
+use actix_web_opentelemetry::RequestTracing;
 
 #[utoipa::path(
     post,
@@ -87,10 +90,13 @@ async fn main() -> std::io::Result<()> {
     let pool = config.pg.create_pool(None, NoTls).unwrap();
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
+    tracing::init_tracing();
+
     let server = HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .wrap(Logger::default())
+            .wrap(RequestTracing::new())
             .service(web::resource("/register").route(web::post().to(register_user)))
             .service(web::resource("/login").route(web::post().to(login_user)))
             .service(web::resource("/refresh").route(web::post().to(refresh_token)))
