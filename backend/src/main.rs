@@ -1,11 +1,10 @@
-use std::env;
-
 use actix_web::middleware::Logger;
 use actix_web::{web, App, Error, HttpResponse, HttpServer};
 use confik::{Configuration as _, EnvSource};
 use deadpool_postgres::{Client, Pool};
 use dotenvy::dotenv;
 use env_logger::Env;
+use std::env;
 use tokio_postgres::NoTls;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
@@ -19,7 +18,6 @@ mod models;
 mod tracing;
 
 use self::{errors::MyError, models::User};
-use tracing::{instrument, Instrument};
 
 #[utoipa::path(
     get,
@@ -74,7 +72,7 @@ async fn main() -> std::io::Result<()> {
     let pool = config.pg.create_pool(None, NoTls).unwrap();
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
-    tracing::init_tracer();
+    tracing::init_tracer(config);
 
     let server = HttpServer::new(move || {
         App::new()

@@ -4,6 +4,7 @@ use utoipa::ToSchema;
 
 #[derive(Deserialize, PostgresMapper, Serialize, ToSchema)]
 #[pg_mapper(table = "users")] // singular 'user' is a keyword..
+#[derive(Debug)]
 pub struct User {
     pub email: String,
     pub username: String,

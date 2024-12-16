@@ -1,26 +1,40 @@
-use opentelemetry::sdk::trace as sdktrace;
-use opentelemetry::sdk::Resource;
-use opentelemetry::KeyValue;
-use opentelemetry_aws::trace::XrayPropagator;
-use tracing_subscriber::layer::SubscriberExt;
-use tracing_subscriber::Registry;
+use opentelemetry::global;
+use opentelemetry_sdk::{propagation::TraceContextPropagator, runtime::Tokio, trace as sdktrace};
+use opentelemetry_stdout::SpanExporter;
 
-pub fn init_tracer() -> sdktrace::Tracer {
-    let exporter = opentelemetry_aws::new_pipeline()
-        .with_service_name("bidding_app")
-        .install_batch(opentelemetry::runtime::Tokio)
-        .expect("Error initializing AWS X-Ray exporter");
+use opentelemetry::{
+    trace::{SpanKind, TraceContextExt, Tracer},
+    Context, KeyValue,
+};
+use crate::config::ServiceConfig;
 
-    let tracer = sdktrace::Tracer::builder()
-        .with_exporter(exporter)
-        .with_resource(Resource::new(vec![KeyValue::new("service.name", "bidding_app")]))
-        .build();
+// pub fn init_tracer() -> sdktrace::TracerProvider {
+    // global::set_text_map_propagator(TraceContextPropagator::new());
+    // // Install stdout exporter pipeline to be able to retrieve the collected spans.
+    // let provider = sdktrace::TracerProvider::builder()
+        // .with_batch_exporter(SpanExporter::default(), Tokio)
+        // .build();
 
-    let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
-    let subscriber = Registry::default().with(telemetry);
-    tracing::subscriber::set_global_default(subscriber).expect("Error setting global subscriber");
+    // let provider = TracerProvider::builder()
+        // .with_simple_exporter(SpanExporter::default())
+        // .build();
 
-    opentelemetry::global::set_text_map_propagator(XrayPropagator::default());
+    // global::set_tracer_provider(provider);
 
-    tracer
+    // global::set_tracer_provider(provider.clone());
+    // provider
+// }
+
+pub fn init_tracer(config: ServiceConfig) {
+    match SpanExporter::new_tonic(ExportConfig::default(), TonicConfig::default()) {
+        Ok(exporter) => {
+            global::set_text_map_propagator(TraceContextPropagator::new());
+            let provider = TracerProvider::builder()
+                .with_simple_exporter(exporter)
+                .build();
+            global::set_tracer_provider(provider);
+        },
+        Err(why) => panic!("{:?}", why)
+    }
+
 }
