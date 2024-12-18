@@ -1,1 +1,1 @@
-SELECT $table_fields FROM users WHERE email = $1;
+SELECT $table_fields FROM bidding.users WHERE email = $1;

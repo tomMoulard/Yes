@@ -23,8 +23,7 @@ pub async fn register_user(client: &Client, user_info: User) -> Result<String, M
         .pop()
         .ok_or(MyError::NotFound)?;
 
-    let token = generate_jwt(&user_info);
-    Ok(token)
+    Ok(generate_jwt(&user_info))
 }
 
 pub async fn login_user(client: &Client, email: &str, password: &str) -> Result<String, MyError> {
@@ -42,8 +41,7 @@ pub async fn login_user(client: &Client, email: &str, password: &str) -> Result<
         .ok_or(MyError::NotFound)?;
 
     if verify(password, &result.password).unwrap() {
-        let token = generate_jwt(&result);
-        Ok(token)
+        Ok(generate_jwt(&result))
     } else {
         Err(MyError::NotFound)
     }
