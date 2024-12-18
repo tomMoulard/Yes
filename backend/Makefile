@@ -1,7 +1,7 @@
 # Makefile for building and running the backend
 
 # Targets
-.PHONY: all build dev
+.PHONY: all build dev migrate-db
 
 all: test lint build
 
@@ -33,3 +33,8 @@ start-db:
 
 stop-db:
 	-docker-compose -f ../.devcontainers/docker-compose.yml down
+
+migrate-db:
+	for file in backend/migrations/*.sql; do \
+		psql $(PG__URL) -f $$file; \
+	done
