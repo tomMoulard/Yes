@@ -19,6 +19,10 @@ Why not
   * Initialize Terraform: `terraform init`
   * Apply the Terraform configuration: `terraform apply`
 
+### Running Migrations
+
+* To run the database migrations, use the following command: `make migrate-db`
+
 ### Usage
 
 * Access the API at the provided API Gateway URL.
