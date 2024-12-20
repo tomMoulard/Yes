@@ -9,6 +9,7 @@ use env_logger::Env;
 use tokio_postgres::NoTls;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
+use serde_json::json;
 
 use crate::config::ServiceConfig;
 
@@ -91,7 +92,7 @@ pub async fn purchase_points(
     let email = auth::extract_email_from_jwt(token).ok_or(MyError::NotFound)?;
     let client: Client = db_pool.get().await.map_err(MyError::PoolError)?;
     let updated_points = db::purchase_points(&client, &email, *amount).await?;
-    Ok(HttpResponse::Ok().json(serde_json::json!({
+    Ok(HttpResponse::Ok().json(json!({
         "success": true,
         "message": "Points purchased successfully",
         "points": updated_points

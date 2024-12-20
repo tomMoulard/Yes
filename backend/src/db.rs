@@ -47,8 +47,8 @@ pub async fn login_user(client: &Client, email: &str, password: &str) -> Result<
     }
 }
 
-pub async fn purchase_points(client: &Client, email: &str, amount: f64) -> Result<u64, MyError> {
-    let points_to_add = (amount * 100.0) as u64;
+pub async fn purchase_points(client: &Client, email: &str, amount: f64) -> Result<u32, MyError> {
+    let points_to_add = (amount * 100.0) as u32;
 
     let stmt = include_str!("sql/get_user_by_email.sql");
     let stmt = stmt.replace("$table_fields", &User::sql_table_fields());
