@@ -46,3 +46,31 @@ pub async fn login_user(client: &Client, email: &str, password: &str) -> Result<
         Err(MyError::NotFound)
     }
 }
+
+pub async fn purchase_points(client: &Client, email: &str, amount: f64) -> Result<u64, MyError> {
+    let points_to_add = (amount * 100.0) as u64;
+
+    let stmt = include_str!("sql/get_user_by_email.sql");
+    let stmt = stmt.replace("$table_fields", &User::sql_table_fields());
+    let stmt = client.prepare(&stmt).await.unwrap();
+
+    let mut user = client
+        .query(&stmt, &[&email])
+        .await?
+        .iter()
+        .map(|row| User::from_row_ref(row).unwrap())
+        .collect::<Vec<User>>()
+        .pop()
+        .ok_or(MyError::NotFound)?;
+
+    user.points += points_to_add;
+
+    let update_stmt = "UPDATE bidding.users SET points = $1 WHERE email = $2";
+    let update_stmt = client.prepare(update_stmt).await.unwrap();
+
+    client
+        .execute(&update_stmt, &[&user.points, &user.email])
+        .await?;
+
+    Ok(user.points)
+}

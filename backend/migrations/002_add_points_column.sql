@@ -1,0 +1,2 @@
+ALTER TABLE bidding.users
+ADD COLUMN points BIGINT DEFAULT 0;

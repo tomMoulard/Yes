@@ -96,6 +96,49 @@
           }
         }
       }
+    },
+    "/purchase": {
+      "post": {
+        "tags": [],
+        "operationId": "purchase_points",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "number",
+                "format": "float"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Purchase points",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "points": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -116,6 +159,9 @@
           },
           "username": {
             "type": "string"
+          },
+          "points": {
+            "type": "integer"
           }
         }
       }

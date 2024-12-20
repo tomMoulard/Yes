@@ -63,9 +63,44 @@ pub async fn refresh_token(token: web::Json<String>) -> Result<HttpResponse, Err
     Ok(HttpResponse::Ok().json(new_token))
 }
 
+#[utoipa::path(
+    post,
+    path = "/purchase",
+    request_body = f64,
+    responses(
+        (status = 200, description = "Purchase points", body = String),
+        (status = 401, description = "Unauthorized")
+    )
+)]
+pub async fn purchase_points(
+    amount: web::Json<f64>,
+    db_pool: web::Data<Pool>,
+    req: actix_web::HttpRequest,
+) -> Result<HttpResponse, Error> {
+    let token = req
+        .headers()
+        .get("Authorization")
+        .ok_or(MyError::NotFound)?
+        .to_str()
+        .map_err(|_| MyError::NotFound)?;
+
+    if !auth::validate_jwt(token) {
+        return Ok(HttpResponse::Unauthorized().finish());
+    }
+
+    let email = auth::extract_email_from_jwt(token).ok_or(MyError::NotFound)?;
+    let client: Client = db_pool.get().await.map_err(MyError::PoolError)?;
+    let updated_points = db::purchase_points(&client, &email, *amount).await?;
+    Ok(HttpResponse::Ok().json(serde_json::json!({
+        "success": true,
+        "message": "Points purchased successfully",
+        "points": updated_points
+    })))
+}
+
 #[derive(OpenApi)]
 #[openapi(
-    paths(register_user, login_user, refresh_token),
+    paths(register_user, login_user, refresh_token, purchase_points),
     components(schemas(User)),
     tags((name = "user", description = "User management endpoints"))
 )]
@@ -94,6 +129,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/register").route(web::post().to(register_user)))
             .service(web::resource("/login").route(web::post().to(login_user)))
             .service(web::resource("/refresh").route(web::post().to(refresh_token)))
+            .service(web::resource("/purchase").route(web::post().to(purchase_points)))
             .service(SwaggerUi::new("/docs/{_:.*}").url("/docs/openapi.json", ApiDoc::openapi()))
     })
     .bind(config.server_addr.clone())?
