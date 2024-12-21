@@ -6,10 +6,10 @@ use confik::{Configuration as _, EnvSource};
 use deadpool_postgres::{Client, Pool};
 use dotenvy::dotenv;
 use env_logger::Env;
+use serde_json::json;
 use tokio_postgres::NoTls;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
-use serde_json::json;
 
 use crate::config::ServiceConfig;
 
