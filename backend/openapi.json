@@ -41,6 +41,38 @@
         }
       }
     },
+    "/purchase": {
+      "post": {
+        "tags": [],
+        "operationId": "purchase_points",
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "number",
+                "format": "double"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Purchase points",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/refresh": {
       "post": {
         "tags": [],
@@ -96,49 +128,6 @@
           }
         }
       }
-    },
-    "/purchase": {
-      "post": {
-        "tags": [],
-        "operationId": "purchase_points",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "number",
-                "format": "float"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Purchase points",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "points": {
-                      "type": "integer"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
     }
   },
   "components": {
@@ -148,7 +137,8 @@
         "required": [
           "email",
           "username",
-          "password"
+          "password",
+          "points"
         ],
         "properties": {
           "email": {
@@ -157,11 +147,13 @@
           "password": {
             "type": "string"
           },
+          "points": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
           "username": {
             "type": "string"
-          },
-          "points": {
-            "type": "integer"
           }
         }
       }
