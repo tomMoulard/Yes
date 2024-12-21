@@ -76,3 +76,15 @@ pub fn refresh_jwt(token: &str) -> Option<String> {
     }
     None
 }
+
+pub fn extract_email_from_jwt(token: &str) -> Option<String> {
+    if let Ok(token_data) = decode::<Claims>(
+        token,
+        &DecodingKey::from_secret(SECRET),
+        &Validation::default(),
+    ) {
+        Some(token_data.claims.email)
+    } else {
+        None
+    }
+}
