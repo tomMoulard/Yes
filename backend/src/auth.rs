@@ -44,7 +44,7 @@ pub fn validate_jwt(token: &str) -> bool {
     .is_ok()
 }
 
-pub fn refresh_jwt(token: &String) -> Option<String> {
+pub fn refresh_jwt(token: &str) -> Option<String> {
     if validate_jwt(token) {
         if let Ok(token_data) = decode::<Claims>(
             token,
@@ -77,7 +77,7 @@ pub fn refresh_jwt(token: &String) -> Option<String> {
     None
 }
 
-pub fn token_to_user(token: &String) -> Option<User> {
+pub fn token_to_user(token: &str) -> Option<User> {
     if let Ok(token_data) = decode::<Claims>(
         token,
         &DecodingKey::from_secret(SECRET),
@@ -94,6 +94,6 @@ pub fn token_to_user(token: &String) -> Option<User> {
     }
 }
 
-pub fn extract_email_from_jwt(token: &String) -> Option<String> {
+pub fn extract_email_from_jwt(token: &str) -> Option<String> {
     token_to_user(token).map(|u| u.email)
 }
