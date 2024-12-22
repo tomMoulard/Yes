@@ -25,6 +25,7 @@ mod tests {
             email: "test@example.com".to_string(),
             username: "testuser".to_string(),
             password: "password".to_string(),
+            points: 0,
         };
 
         mock_client
@@ -43,6 +44,7 @@ mod tests {
             email: "test@example.com".to_string(),
             username: "testuser".to_string(),
             password: "password".to_string(),
+            points: 0,
         };
 
         mock_client
@@ -60,6 +62,7 @@ mod tests {
             email: "test@example.com".to_string(),
             username: "testuser".to_string(),
             password: "password".to_string(),
+            points: 0,
         });
         let new_token = refresh_jwt(&token).unwrap();
         assert!(validate_jwt(&new_token));
@@ -71,6 +74,7 @@ mod tests {
             email: "test@example.com".to_string(),
             username: "testuser".to_string(),
             password: "password".to_string(),
+            points: 0,
         };
         let token = generate_jwt(&user);
         assert!(validate_jwt(&token));
@@ -82,6 +86,7 @@ mod tests {
             email: "test@example.com".to_string(),
             username: "testuser".to_string(),
             password: "password".to_string(),
+            points: 0,
         };
         let token = generate_jwt(&user);
         assert!(validate_jwt(&token));
@@ -93,6 +98,7 @@ mod tests {
             email: "test@example.com".to_string(),
             username: "testuser".to_string(),
             password: "password".to_string(),
+            points: 0,
         };
         let token = generate_jwt(&user);
         let new_token = refresh_jwt(&token).unwrap();
@@ -125,6 +131,7 @@ mod tests {
             email: "test@example.com".to_string(),
             username: "testuser".to_string(),
             password: "password".to_string(),
+            points: 0,
         };
 
         mock_client
@@ -144,6 +151,7 @@ mod tests {
             email: "test@example.com".to_string(),
             username: "testuser".to_string(),
             password: "password".to_string(),
+            points: 0,
         };
 
         mock_client
@@ -197,15 +205,16 @@ mod tests {
     #[test]
     fn test_generate_jwt_table() {
         let test_cases = vec![
-            ("test@example.com", "testuser", "password"),
-            ("another@example.com", "anotheruser", "anotherpassword"),
+            ("test@example.com", "testuser", "password", 0),
+            ("another@example.com", "anotheruser", "anotherpassword", 0),
         ];
 
-        for (email, username, password) in test_cases {
+        for (email, username, password, points) in test_cases {
             let user = User {
                 email: email.to_string(),
                 username: username.to_string(),
                 password: password.to_string(),
+                points: points,
             };
             let token = generate_jwt(&user);
             assert!(validate_jwt(&token));
@@ -215,15 +224,16 @@ mod tests {
     #[test]
     fn test_validate_jwt_table() {
         let test_cases = vec![
-            ("test@example.com", "testuser", "password"),
-            ("another@example.com", "anotheruser", "anotherpassword"),
+            ("test@example.com", "testuser", "password", 0),
+            ("another@example.com", "anotheruser", "anotherpassword", 0),
         ];
 
-        for (email, username, password) in test_cases {
+        for (email, username, password, points) in test_cases {
             let user = User {
                 email: email.to_string(),
                 username: username.to_string(),
                 password: password.to_string(),
+                points: points,
             };
             let token = generate_jwt(&user);
             assert!(validate_jwt(&token));
@@ -233,15 +243,16 @@ mod tests {
     #[test]
     fn test_refresh_jwt_table() {
         let test_cases = vec![
-            ("test@example.com", "testuser", "password"),
-            ("another@example.com", "anotheruser", "anotherpassword"),
+            ("test@example.com", "testuser", "password", 0),
+            ("another@example.com", "anotheruser", "anotherpassword", 0),
         ];
 
-        for (email, username, password) in test_cases {
+        for (email, username, password, points) in test_cases {
             let user = User {
                 email: email.to_string(),
                 username: username.to_string(),
                 password: password.to_string(),
+                points: points,
             };
             let token = generate_jwt(&user);
             let new_token = refresh_jwt(&token).unwrap();

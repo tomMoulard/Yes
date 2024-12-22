@@ -12,7 +12,7 @@ pub async fn register_user(
 
     let hashed_password = bcrypt::hash(&user_info.password, bcrypt::DEFAULT_COST).unwrap();
 
-    client
+    let user = client
         .query(
             &stmt,
             &[&user_info.email, &hashed_password, &user_info.username],
@@ -24,7 +24,7 @@ pub async fn register_user(
         .pop()
         .ok_or(MyError::NotFound)?;
 
-    Ok(generate_jwt(&user_info))
+    Ok(generate_jwt(&user))
 }
 
 pub async fn login_user(
