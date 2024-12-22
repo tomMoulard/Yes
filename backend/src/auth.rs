@@ -9,6 +9,7 @@ struct Claims {
     exp: usize,
     email: String,
     username: String,
+    points: i64,
 }
 
 const SECRET: &[u8] = b"secret";
@@ -25,6 +26,7 @@ pub fn generate_jwt(user: &User) -> String {
         exp: expiration as usize,
         email: user.email.clone(),
         username: user.username.clone(),
+        points: user.points,
     };
 
     encode(
@@ -62,6 +64,7 @@ pub fn refresh_jwt(token: &str) -> Option<String> {
                 exp: new_expiration as usize,
                 email: token_data.claims.email,
                 username: token_data.claims.username,
+                points: token_data.claims.points,
             };
 
             return Some(
@@ -87,7 +90,7 @@ pub fn token_to_user(token: &str) -> Option<User> {
             email: token_data.claims.email,
             username: token_data.claims.username,
             password: "".to_string(),
-            points: 0,
+            points: token_data.claims.points,
         })
     } else {
         None
