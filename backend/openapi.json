@@ -15,7 +15,9 @@
   "paths": {
     "/login": {
       "post": {
-        "tags": [],
+        "tags": [
+          "user"
+        ],
         "operationId": "login_user",
         "requestBody": {
           "content": {
@@ -47,10 +49,9 @@
         "operationId": "purchase_points",
         "requestBody": {
           "content": {
-            "text/plain": {
+            "application/json": {
               "schema": {
-                "type": "number",
-                "format": "double"
+                "$ref": "#/components/schemas/PurchaseRequest"
               }
             }
           },
@@ -70,23 +71,20 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
       }
     },
     "/refresh": {
       "post": {
-        "tags": [],
+        "tags": [
+          "user"
+        ],
         "operationId": "refresh_token",
-        "requestBody": {
-          "content": {
-            "text/plain": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "Refresh JWT token",
@@ -98,12 +96,19 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
       }
     },
     "/register": {
       "post": {
-        "tags": [],
+        "tags": [
+          "user"
+        ],
         "operationId": "register_user",
         "requestBody": {
           "content": {
@@ -132,6 +137,18 @@
   },
   "components": {
     "schemas": {
+      "PurchaseRequest": {
+        "type": "object",
+        "required": [
+          "points"
+        ],
+        "properties": {
+          "points": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "User": {
         "type": "object",
         "required": [
@@ -149,20 +166,26 @@
           },
           "points": {
             "type": "integer",
-            "format": "int32",
-            "minimum": 0
+            "format": "int64"
           },
           "username": {
             "type": "string"
           }
         }
       }
+    },
+    "securitySchemes": {
+      "token": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
   },
   "tags": [
     {
       "name": "user",
-      "description": "User management endpoints"
+      "description": "self::models::User management endpoints"
     }
   ]
 }

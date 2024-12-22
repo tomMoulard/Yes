@@ -12,6 +12,7 @@ use self::errors::MyError;
 #[utoipa::path(
     post,
     path = "/register",
+    tags = ["user"],
     request_body = self::models::User,
     responses((status = 200, description = "Register a new user", body = String))
 )]
@@ -28,6 +29,7 @@ pub async fn register_user(
 #[utoipa::path(
     post,
     path = "/login",
+    tags = ["user"],
     request_body = self::models::User,
     responses((status = 200, description = "Login a user", body = String))
 )]
@@ -44,6 +46,7 @@ pub async fn login_user(
 #[utoipa::path(
     post,
     path = "/refresh",
+    tags = ["user"],
     security(("token" = [])),
     responses((status = 200, description = "Refresh JWT token", body = String))
 )]
@@ -110,7 +113,7 @@ pub async fn purchase_points(
     paths(register_user, login_user, refresh_token, purchase_points),
     components(schemas(self::models::User)),
     tags((name = "user", description = "self::models::User management endpoints")),
-    modifiers(&SecurityAddon)
+    modifiers(&SecurityAddon),
 )]
 struct ApiDoc;
 
