@@ -8,4 +8,15 @@ pub struct User {
     pub email: String,
     pub username: String,
     pub password: String,
+    pub points: i64,
+}
+
+#[derive(Deserialize, Serialize, ToSchema)]
+pub struct RefreshRequest {
+    pub token: String,
+}
+
+#[derive(Deserialize, Serialize, ToSchema)]
+pub struct PurchaseRequest {
+    pub points: i64,
 }

@@ -11,7 +11,12 @@ build:
 dev: start-db
 	cargo run
 
-lint:
+lint: lint-clippy lint-fmt
+
+lint-clippy:
+	cargo clippy -- -D warnings
+
+lint-fmt:
 	cargo fmt --all -- --check
 
 apply-lint:

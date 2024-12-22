@@ -25,6 +25,7 @@ tokio-postgres = "0.7.12"
 utoipa = "5.2.0"
 utoipa-actix-web = "0.1.2"
 utoipa-swagger-ui = { version = "8.0.3", features = ["actix-web"] }
+serde_json = "1.0"
 
 [[bin]]
 name = "bidding_app"

@@ -36,3 +36,10 @@ graph TD;
   A -->|API Requests| D[API Gateway];
   D -->|Invokes| E[Lambda Function];
 ```
+
+## TODO
+
+ - user id as UUID
+ - use authentication middleware that plugs in the webserver to wrap the
+ request handler and inject user data into the request.
+ - actually make a payement (lol)
