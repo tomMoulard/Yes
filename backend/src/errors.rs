@@ -7,6 +7,7 @@ use tokio_postgres::error::Error as PGError;
 #[derive(Debug, Display, Error, From)]
 pub enum MyError {
     NotFound,
+    Unauthorized,
     PGError(PGError),
     PGMError(PGMError),
     PoolError(PoolError),
@@ -16,6 +17,7 @@ impl ResponseError for MyError {
     fn error_response(&self) -> HttpResponse {
         match *self {
             MyError::NotFound => HttpResponse::NotFound().finish(),
+            MyError::Unauthorized => HttpResponse::Unauthorized().finish(),
             MyError::PoolError(ref err) => {
                 HttpResponse::InternalServerError().body(err.to_string())
             }
