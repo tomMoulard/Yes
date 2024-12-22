@@ -2,7 +2,10 @@ use tokio_pg_mapper::FromTokioPostgresRow;
 
 use crate::{auth::generate_jwt, errors::MyError, models::User};
 
-pub async fn register_user(client: &deadpool_postgres::Client, user_info: User) -> Result<String, MyError> {
+pub async fn register_user(
+    client: &deadpool_postgres::Client,
+    user_info: User,
+) -> Result<String, MyError> {
     let _stmt = include_str!("sql/add_user.sql");
     let _stmt = _stmt.replace("$table_fields", &User::sql_table_fields());
     let stmt = client.prepare(&_stmt).await.unwrap();
@@ -24,7 +27,11 @@ pub async fn register_user(client: &deadpool_postgres::Client, user_info: User) 
     Ok(generate_jwt(&user_info))
 }
 
-pub async fn login_user(client: &deadpool_postgres::Client, email: &str, password: &str) -> Result<String, MyError> {
+pub async fn login_user(
+    client: &deadpool_postgres::Client,
+    email: &str,
+    password: &str,
+) -> Result<String, MyError> {
     let stmt = include_str!("sql/get_user_by_email.sql");
     let stmt = stmt.replace("$table_fields", &User::sql_table_fields());
     let stmt = client.prepare(&stmt).await.unwrap();
@@ -45,7 +52,11 @@ pub async fn login_user(client: &deadpool_postgres::Client, email: &str, passwor
     }
 }
 
-pub async fn purchase_points(client: &deadpool_postgres::Client, email: &str, amount: i64) -> Result<i64, MyError> {
+pub async fn purchase_points(
+    client: &deadpool_postgres::Client,
+    email: &str,
+    amount: i64,
+) -> Result<i64, MyError> {
     let stmt = include_str!("sql/get_user_by_email.sql");
     let stmt = stmt.replace("$table_fields", &User::sql_table_fields());
     let stmt = client.prepare(&stmt).await.unwrap();

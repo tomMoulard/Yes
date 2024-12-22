@@ -51,7 +51,7 @@ pub async fn login_user(
     responses((status = 200, description = "Refresh JWT token", body = String))
 )]
 pub async fn refresh_token(
-        req: actix_web::HttpRequest,
+    req: actix_web::HttpRequest,
 ) -> Result<actix_web::HttpResponse, actix_web::Error> {
     let token = req
         .cookie("token")
