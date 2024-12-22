@@ -114,6 +114,12 @@ pub async fn purchase_points(
     components(schemas(self::models::User)),
     tags((name = "user", description = "self::models::User management endpoints")),
     modifiers(&SecurityAddon),
+    info(
+        license(
+            name = "MIT",
+            identifier = "MIT"
+        )
+    )
 )]
 struct ApiDoc;
 

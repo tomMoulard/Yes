@@ -19,3 +19,4 @@ test:
 
 generate:
 	$(MAKE) -C backend openapi
+	$(MAKE) -C frontend generate-client
