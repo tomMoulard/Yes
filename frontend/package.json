@@ -5,12 +5,31 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-client": "openapi-generator-cli generate -i ../backend/openapi.json -g typescript-fetch -o src/api"
+    "generate-client": "openapi-generator-cli generate -i ../backend/openapi.json -g typescript-fetch -o src/api",
+    "start": "react-scripts start",
+    "start:prod": "NODE_ENV=production react-scripts start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.15.3"
+    "@openapitools/openapi-generator-cli": "^2.15.3",
+    "react-scripts": "^3.0.1"
+  },
+  "dependencies": {
+    "antd": "^5.22.5",
+    "jwt-decode": "^4.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

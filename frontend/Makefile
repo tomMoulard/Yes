@@ -5,3 +5,6 @@
 
 generate-client:
 	npm run generate-client
+
+start:
+	NODE_OPTIONS=--openssl-legacy-provider npm start
