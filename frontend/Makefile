@@ -7,10 +7,10 @@ generate-client:
 	npm run generate-client
 
 start:
-	npm start
+	npm run start:dev
 
 test:
-	npm test
+	npm run test
 
 # npm install -g npm-check-updates
 update-deps:
