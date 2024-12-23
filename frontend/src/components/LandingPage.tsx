@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import jwtDecode from 'jwtDecode';
+import { jwtDecode } from "jwt-decode";
 import { Button, Layout, Typography } from 'antd';
-import { useHistory, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -14,7 +14,7 @@ interface User {
 
 const LandingPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const history = useHistory();
+  const history = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -26,7 +26,7 @@ const LandingPage: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    history.push('/login');
+    history('/login');
   };
 
   return (

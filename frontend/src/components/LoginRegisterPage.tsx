@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Typography, message } from 'antd';
 import { UserApi } from '../api/apis/UserApi';
 import { User } from '../api/models/User';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import { ResponseError } from '../api';
 
 const { Title } = Typography;
 
 const LoginRegisterPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const history = useHistory();
+  const history = useNavigate();
   const userApi = new UserApi();
 
   const onFinish = async (values: User) => {
@@ -16,21 +17,21 @@ const LoginRegisterPage: React.FC = () => {
       if (isLogin) {
         const token = await userApi.loginUser({ user: values });
         localStorage.setItem('token', token);
-        history.push('/');
+        history('/');
       } else {
         const token = await userApi.registerUser({ user: values });
         localStorage.setItem('token', token);
-        history.push('/');
+        history('/');
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error instanceof ResponseError && error.response && error.response.status === 401) {
         message.error('Unauthorized: Incorrect email or password.');
-      } else if (error.response && error.response.status === 404) {
+      } else if (error instanceof ResponseError && error.response && error.response.status === 404) {
         message.error('Not Found: User does not exist.');
       } else {
         message.error('An error occurred. Please try again.');
       }
-    }
+ }
   };
 
   return (

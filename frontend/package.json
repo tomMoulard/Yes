@@ -14,11 +14,14 @@
   "license": "ISC",
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.15.3",
-    "react-scripts": "^3.0.1"
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "react-scripts": "^5.0.1"
   },
   "dependencies": {
-    "antd": "^5.22.5",
-    "jwt-decode": "^4.0.0"
+    "antd": "^5.22.6",
+    "jwt-decode": "^4.0.0",
+    "react-router": "^7.1.1"
   },
   "browserslist": {
     "production": [

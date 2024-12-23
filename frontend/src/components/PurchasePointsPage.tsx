@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Form, InputNumber, Layout, message, Typography } from 'antd';
 import { DefaultApi } from '../api/apis/DefaultApi';
-import { useHistory } from 'react-router-dom';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const PurchasePointsPage: React.FC = () => {
   const [points, setPoints] = useState<number>(0);
-  const history = useHistory();
 
   const handlePurchase = async () => {
     const api = new DefaultApi();
@@ -28,7 +26,7 @@ const PurchasePointsPage: React.FC = () => {
       <Content>
         <Form layout="vertical" onFinish={handlePurchase}>
           <Form.Item label="Number of Points" required>
-            <InputNumber min={1} value={points} onChange={setPoints} />
+            <InputNumber min={1} value={points} onChange = {(value) => setPoints(value?.valueOf() || 0)} />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">

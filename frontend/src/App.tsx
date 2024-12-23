@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router';
 import LandingPage from './components/LandingPage';
 import LoginRegisterPage from './components/LoginRegisterPage';
 import PurchasePointsPage from './components/PurchasePointsPage';
@@ -10,17 +10,17 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <Switch>
+      <Routes>
+        <Route path="/">
+          {isAuthenticated ? <LandingPage /> : <Navigate to="/login" />}
+        </Route>
         <Route path="/login">
-          {isAuthenticated ? <Redirect to="/" /> : <LoginRegisterPage />}
+          {isAuthenticated ? <Navigate to="/" /> : <LoginRegisterPage />}
         </Route>
         <Route path="/purchase">
-          {isAuthenticated ? <PurchasePointsPage /> : <Redirect to="/login" />}
+          {isAuthenticated ? <PurchasePointsPage /> : <Navigate to="/login" />}
         </Route>
-        <Route path="/">
-          {isAuthenticated ? <LandingPage /> : <Redirect to="/login" />}
-        </Route>
-      </Switch>
+      </Routes>
     </Router>
   );
 };
