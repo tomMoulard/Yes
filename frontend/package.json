@@ -4,7 +4,7 @@
   "description": "Why not",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "react-scripts test",
     "generate-client": "openapi-generator-cli generate -i ../backend/openapi.json -g typescript-fetch -o src/api",
     "start": "react-scripts start",
     "start:prod": "NODE_ENV=production react-scripts start"
@@ -16,7 +16,10 @@
     "@openapitools/openapi-generator-cli": "^2.15.3",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "jest": "^27.0.6",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/jest-dom": "^5.14.1"
   },
   "dependencies": {
     "antd": "^5.22.6",
