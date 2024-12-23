@@ -9,6 +9,7 @@ build:
 	cargo build --release
 
 dev: start-db
+	# go to http://localhost:8080/docs/ for documentation
 	cargo run
 
 lint: lint-clippy lint-fmt

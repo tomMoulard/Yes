@@ -16,6 +16,7 @@ lint:
 
 test:
 	$(MAKE) -C backend test
+	$(MAKE) -C frontend test
 
 generate:
 	$(MAKE) -C backend openapi

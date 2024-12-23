@@ -4,13 +4,40 @@
   "description": "Why not",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-client": "openapi-generator-cli generate -i ../backend/openapi.json -g typescript-fetch -o src/api"
+    "generate-client": "openapi-generator-cli generate -i ../backend/openapi.json -g typescript-fetch -o src/api",
+    "start:dev": "react-scripts start",
+    "start:prod": "NODE_ENV=production react-scripts start",
+    "test": "react-scripts test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.15.3"
+    "@openapitools/openapi-generator-cli": "^2.15.3",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "jest": "^29.7.0",
+    "msw": "^2.7.0",
+    "react-scripts": "^5.0.1"
+  },
+  "dependencies": {
+    "antd": "^5.22.6",
+    "jest-fixed-jsdom": "^0.0.9",
+    "jwt-decode": "^4.0.0",
+    "react-router": "^7.1.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
