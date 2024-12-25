@@ -1,51 +1,39 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 export const handlers = [
-  rest.post('/login', (req, res, ctx) => {
-    const { email, password } = req.body;
+	http.post('/login', ({ request }) => {
+		console.log("mock /login", {request});
 
-    if (email === 'test@example.com' && password === 'password') {
-      return res(
-        ctx.status(200),
-        ctx.json({ token: 'fake-jwt-token' })
-      );
-    }
+		// if (email === 'test@example.com' && password === 'password') {
+			// return HttpResponse.json({ token: 'fake-jwt-token' })
+		// }
 
-    return res(
-      ctx.status(401),
-      ctx.json({ message: 'Unauthorized' })
-    );
-  }),
+		return new HttpResponse(null, { status: 401 });
+	}),
 
-  rest.post('/register', (req, res, ctx) => {
-    const { email, password, username } = req.body;
+	http.post('/register', ({ request }) => {
+		console.log("mock /register", {request});
 
-    if (email && password && username) {
-      return res(
-        ctx.status(200),
-        ctx.json({ token: 'fake-jwt-token' })
-      );
-    }
+		// if (email && password && username) {
+			// return HttpResponse.json({ token: 'fake-jwt-token' })
+		// }
 
-    return res(
-      ctx.status(400),
-      ctx.json({ message: 'Bad Request' })
-    );
-  }),
+		return new HttpResponse(null, { status: 401 });
+	}),
 
-  rest.post('/purchase', (req, res, ctx) => {
-    const { points } = req.body;
+	http.post('/purchase', ({ request }) => {
+		console.log("mock /purchase", {request});
+		// const { points } = req.body;
 
-    if (points > 0) {
-      return res(
-        ctx.status(200),
-        ctx.json({ newBalance: points + 100 })
-      );
-    }
+		// if (points > 0) {
+				// ctx.json({ newBalance: points + 100 })
+			// return HttpResponse.json({ token: 'fake-jwt-token' })
+		// }
 
-    return res(
-      ctx.status(400),
-      ctx.json({ message: 'Invalid points' })
-    );
-  })
+		return new HttpResponse(null, {
+			status: 400,
+			statusText: 'Invalid points',
+		});
+	})
 ];
+
