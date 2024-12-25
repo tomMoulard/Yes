@@ -11,15 +11,9 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/">
-          {isAuthenticated ? <LandingPage /> : <Navigate to="/login" />}
-        </Route>
-        <Route path="/login">
-          {isAuthenticated ? <Navigate to="/" /> : <LoginRegisterPage />}
-        </Route>
-        <Route path="/purchase">
-          {isAuthenticated ? <PurchasePointsPage /> : <Navigate to="/login" />}
-        </Route>
+        <Route path="/" element={isAuthenticated ? <LandingPage /> : <Navigate to="/login" />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <LoginRegisterPage />} />
+        <Route path="/purchase" element={isAuthenticated ? <PurchasePointsPage /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );
