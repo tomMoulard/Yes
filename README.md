@@ -43,3 +43,6 @@ graph TD;
  - use authentication middleware that plugs in the webserver to wrap the
  request handler and inject user data into the request.
  - actually make a payement (lol)
+ - fix frontend/backend tests
+ - /login does not require the whole user data, only user/password
+ - allow CORS in backend for frontend
