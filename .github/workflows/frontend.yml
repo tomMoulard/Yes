@@ -28,3 +28,9 @@ jobs:
       run: |
         npm run generate-client
         git diff --exit-code
+
+    - name: Run tests
+      run: npm test
+
+    - name: lint
+      run: npm run lint
