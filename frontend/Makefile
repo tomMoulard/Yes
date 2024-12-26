@@ -18,7 +18,7 @@ lint-fix:
 	npx eslint --fix
 
 test:
-	pnpm run test
+	pnpm run test --coverage .
 
 # npm install -g npm-check-updates
 update-deps:

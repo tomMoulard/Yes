@@ -1,3 +1,4 @@
 package-lock.json
 openapitools.json
 src/api/.openapi-generator-ignore
+coverage
