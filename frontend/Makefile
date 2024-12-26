@@ -10,6 +10,8 @@ start:
 	pnpm run start:dev
 
 lint:
+	# do `npx eslint --inspect-config` for more informations.
+	tsc --noEmit
 	pnpm run lint
 
 lint-fix:

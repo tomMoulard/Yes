@@ -1,13 +1,11 @@
-// @ts-check
-
 import eslintjs from '@eslint/js';
 import eslintreact from "eslint-plugin-react";
 import eslintts from 'typescript-eslint';
 
 export default eslintts.config(
 	eslintjs.configs.all,
-	eslintts.configs.strictTypeChecked,
-	eslintts.configs.stylisticTypeChecked,
+	eslintreact.configs.flat.all,
+	eslintts.configs.all,
 	{
 		languageOptions: {
 			parserOptions: {
@@ -34,5 +32,10 @@ export default eslintts.config(
 			sourceType: "commonjs"
 		}
 	},
-	eslintreact.configs.flat.recommended,
+	{
+		rules: {
+			"react/jsx-filename-extension": ['error', { "extensions": [".tsx", ".jsx"] }],
+			"react/jsx-indent": [ 'error', 'tab', { checkAttributes: true, indentLogicalExpressions: true } ],
+		},
+	},
 );
