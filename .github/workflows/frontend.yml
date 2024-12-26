@@ -16,23 +16,28 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 'latest'
+        cache: 'pnpm'
+        cache-dependency-path: '**/pnpm-lock.yaml'
 
     - name: Install dependencies
-      run: npm install
+      run: pnpm install
 
     - name: Generate React client
       run: |
-        npm run generate-client
+        make generate-client
         git diff --exit-code
 
     - name: Run tests
-      run: npm test
+      run: make test
 
     - name: lint
-      run: |
-        tsc --noEmit
-        npm run lint
+      run: make lint
