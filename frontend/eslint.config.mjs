@@ -3,9 +3,9 @@ import eslintreact from "eslint-plugin-react";
 import eslintts from 'typescript-eslint';
 
 export default eslintts.config(
-	eslintjs.configs.all,
+	eslintjs.configs.recommended,
 	eslintreact.configs.flat.all,
-	eslintts.configs.all,
+	eslintts.configs.recommended,
 	{
 		languageOptions: {
 			parserOptions: {
@@ -21,6 +21,8 @@ export default eslintts.config(
 		ignores: [
 			// Backend OpenAPI generated files
 			"src/api/",
+			// Frontend coverage generated files
+			"coverage/",
 		],
 	},
 	{
