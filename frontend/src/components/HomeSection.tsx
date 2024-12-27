@@ -4,15 +4,9 @@ import styled from 'styled-components';
 
 const { Title, Paragraph } = Typography;
 
-const HomeCard = styled(Card)`
-  margin: 20px;
-  padding: 20px;
-  background-color: #f0f2f5;
-`;
-
 const HomeSection: React.FC = () => {
   return (
-	<HomeCard>
+	<Card>
 		<Title level={2}>
 			Welcome to Our Application
 		</Title>
@@ -24,7 +18,7 @@ const HomeSection: React.FC = () => {
 		<Paragraph>
 			We are excited to have you here and hope you enjoy using our application.
 		</Paragraph>
-	</HomeCard>
+	</Card>
   );
 };
 

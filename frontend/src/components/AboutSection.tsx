@@ -4,15 +4,9 @@ import styled from 'styled-components';
 
 const { Title, Paragraph } = Typography;
 
-const AboutCard = styled(Card)`
-  margin: 20px;
-  padding: 20px;
-  background-color: #f0f2f5;
-`;
-
 const AboutSection: React.FC = () => {
   return (
-	<AboutCard>
+	<Card>
 		<Title level={2}>
 			About Us
 		</Title>
@@ -28,7 +22,7 @@ const AboutSection: React.FC = () => {
 		<Paragraph>
 			We continuously strive to improve and innovate to meet the needs of our users.
 		</Paragraph>
-	</AboutCard>
+	</Card>
   );
 };
 

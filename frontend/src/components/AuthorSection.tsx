@@ -4,15 +4,9 @@ import styled from 'styled-components';
 
 const { Title, Paragraph } = Typography;
 
-const AuthorCard = styled(Card)`
-  margin: 20px;
-  padding: 20px;
-  background-color: #f0f2f5;
-`;
-
 const AuthorSection: React.FC = () => {
   return (
-	<AuthorCard>
+	<Card>
 		<Title level={2}>
 			About the Author
 		</Title>
@@ -28,7 +22,7 @@ const AuthorSection: React.FC = () => {
 		<Paragraph>
 			Tom enjoys sharing his knowledge with the community and contributing to open-source projects.
 		</Paragraph>
-	</AuthorCard>
+	</Card>
   );
 };
 

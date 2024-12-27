@@ -4,15 +4,9 @@ import styled from 'styled-components';
 
 const { Title, Paragraph } = Typography;
 
-const FAQCard = styled(Card)`
-  margin: 20px;
-  padding: 20px;
-  background-color: #f0f2f5;
-`;
-
 const FAQSection: React.FC = () => {
   return (
-	<FAQCard>
+	<Card>
 		<Title level={2}>
 			Frequently Asked Questions
 		</Title>
@@ -67,7 +61,7 @@ const FAQSection: React.FC = () => {
 				Answer to question 5.
 			</li>
 		</ul>
-	</FAQCard>
+	</Card>
   );
 };
 

@@ -4,15 +4,9 @@ import styled from 'styled-components';
 
 const { Title, Paragraph } = Typography;
 
-const FeaturesCard = styled(Card)`
-  margin: 20px;
-  padding: 20px;
-  background-color: #f0f2f5;
-`;
-
 const FeaturesSection: React.FC = () => {
   return (
-	<FeaturesCard>
+	<Card>
 		<Title level={2}>
 			Features
 		</Title>
@@ -46,7 +40,7 @@ const FeaturesSection: React.FC = () => {
 				Feature 5: Description of feature 5.
 			</li>
 		</ul>
-	</FeaturesCard>
+	</Card>
   );
 };
 
