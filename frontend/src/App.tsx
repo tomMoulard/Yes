@@ -1,49 +1,54 @@
 import './App.css';
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense } from 'react';
 import { Layout } from 'antd';
+import Sider from 'antd/es/layout/Sider';
+import { Footer } from 'antd/es/layout/layout';
+import MenuComponent from './components/menu';
 
 const { Content } = Layout;
 
-const HomeSection = lazy(() => import('./components/HomeSection'));
-const AboutSection = lazy(() => import('./components/AboutSection'));
-const AuthorSection = lazy(() => import('./components/AuthorSection'));
-const FeaturesSection = lazy(() => import('./components/FeaturesSection'));
-const TestimonialsSection = lazy(() => import('./components/TestimonialsSection'));
-const FAQSection = lazy(() => import('./components/FAQSection'));
+const siderStyle: React.CSSProperties = {
+  overflow: 'auto',
+  height: '100vh',
+  position: 'fixed',
+  insetInlineStart: 0,
+  top: 0,
+  bottom: 0,
+  scrollbarWidth: 'thin',
+  scrollbarGutter: 'stable',
+};
 
 export default function App() {
   return (
-	<Layout>
-		<Content style={{ padding: '0 50px', marginTop: 64 }}>
-			<Suspense fallback={<div>
-				Loading...
-			</div>}
-			>
-				<div id="home">
-					<HomeSection />
-				</div>
+	<Layout style={{ minHeight: '100vh' }}>
+		<Sider
+    breakpoint="lg"
+    style={siderStyle}
+		>
+			<MenuComponent />
 
-				<div id="about">
-					<AboutSection />
-				</div>
+		</Sider>
 
-				<div id="author">
-					<AuthorSection />
-				</div>
+		<Layout style={{ marginInlineStart: 200 }}>
+			<Content style={{ padding: '0 50px', marginTop: 64, margin: '24px 16px 0', overflow: 'initial' }}>
+				<Suspense fallback={
+					<div>
+						Loading...
+					</div>
+					}
+				>
+					{/* this is where to add future components to have the app built in*/}
+				</Suspense>
+			</Content>
 
-				<div id="features">
-					<FeaturesSection />
-				</div>
+			<Footer style={{ textAlign: 'center' }}>
+				{'Yes © '}
 
-				<div id="testimonials">
-					<TestimonialsSection />
-				</div>
+				{new Date().getFullYear()}
 
-				<div id="faq">
-					<FAQSection />
-				</div>
-			</Suspense>
-		</Content>
+				{' Created by Tom Corp.'}
+			</Footer>
+		</Layout>
 	</Layout>
   );
 }
