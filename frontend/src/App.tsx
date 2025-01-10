@@ -1,11 +1,9 @@
 import './App.css';
 import React, { Suspense } from 'react';
 import { Layout } from 'antd';
-import Sider from 'antd/es/layout/Sider';
-import { Footer } from 'antd/es/layout/layout';
 import MenuComponent from './components/menu';
 
-const { Content } = Layout;
+const { Content, Footer, Sider } = Layout;
 
 const siderStyle: React.CSSProperties = {
   overflow: 'auto',
