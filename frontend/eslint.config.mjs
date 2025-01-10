@@ -36,8 +36,11 @@ export default eslintts.config(
 	},
 	{
 		rules: {
-			"react/jsx-filename-extension": ['error', { "extensions": [".tsx", ".jsx"] }],
+			"react/forbid-component-props": [ 'off' ],
+			"react/jsx-filename-extension": [ 'error', { "extensions": [".tsx", ".jsx"] } ],
 			"react/jsx-indent": [ 'error', 'tab', { checkAttributes: true, indentLogicalExpressions: true } ],
+			"react/jsx-max-depth": [ 'off' ],
+			"react/jsx-no-literals": [ 'off' ],
 		},
 	},
 );
