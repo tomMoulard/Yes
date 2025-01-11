@@ -1,5 +1,5 @@
 import './App.css';
-import React, { Suspense } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Layout } from 'antd';
 import MenuComponent from './components/menu';
 
@@ -15,6 +15,8 @@ const siderStyle: React.CSSProperties = {
   scrollbarWidth: 'thin',
   scrollbarGutter: 'stable',
 };
+
+const LazyComponent = lazy(() => import('./components/LazyComponent'));
 
 export default function App() {
   return (
@@ -35,7 +37,7 @@ export default function App() {
 					</div>
 					}
 				>
-					{/* this is where to add future components to have the app built in*/}
+					<LazyComponent />
 				</Suspense>
 			</Content>
 
