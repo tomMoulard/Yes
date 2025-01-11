@@ -43,4 +43,11 @@ export default eslintts.config(
 			"react/jsx-no-literals": [ 'off' ],
 		},
 	},
+	{
+		settings: {
+			react: {
+				version: "detect"
+			}
+		}
+	}
 );

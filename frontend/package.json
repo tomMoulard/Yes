@@ -9,7 +9,7 @@
 	"scripts": {
 		"generate-client": "openapi-generator-cli generate -i ../backend/openapi.json -g typescript-fetch -o src/api",
 		"start:dev": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
-		"build": "react-scripts build",
+		"build": "webpack --config webpack.config.js",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"lint": "eslint ."
@@ -56,7 +56,12 @@
 		"prettier": "^3.4.2",
 		"ts-jest": "^29.2.5",
 		"typescript": "^5.7.3",
-		"typescript-eslint": "^8.19.1"
+		"typescript-eslint": "^8.19.1",
+		"webpack": "^5.64.4",
+		"terser-webpack-plugin": "^5.2.5"
 	},
-	"packageManager": "pnpm@9.15.3"
+	"packageManager": "pnpm@9.15.3",
+	"engines": {
+		"pnpm": ">=9.0.0"
+	}
 }

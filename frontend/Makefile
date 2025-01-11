@@ -11,7 +11,7 @@ start:
 
 lint:
 	# do `npx eslint --inspect-config` for more informations.
-	tsc --noEmit
+	npx tsc --noEmit
 	pnpm run lint
 
 lint-fix:
@@ -24,3 +24,10 @@ test:
 update-deps:
 	ncu --upgrade
 	pnpm install
+
+# Performance optimization tasks
+build:
+	pnpm run build
+
+analyze:
+	webpack --config webpack.config.js --profile --json > stats.json
