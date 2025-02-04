@@ -15,7 +15,7 @@
 		"lint": "eslint ."
 	},
 	"dependencies": {
-		"antd": "^5.23.0",
+		"antd": "^5.23.3",
 		"cra-template-typescript": "1.2.0",
 		"nth-check": ">=2.1.1",
 		"postcss": ">=8.5.0",
